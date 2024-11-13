@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Cédula de Identidad</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif, sans-serif;
+            background-color: #ececec;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #3d0258;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #0a0000;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #121ba3;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #e4d7d7;
+        }
+
+        #encabezado {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function validarModulo10(cedula) {
+          if (cedula.length !== 10) {
+              return false;
+          }
+
+          let suma = 0;
+          for (let i = 0; i < cedula.length; i++) {
+              let digito = parseInt(cedula[i]);
+              if (i % 2 === 0) {
+                  digito *= 2;
+                  if (digito > 9) {
+                      digito -= 9;
+                  }
+              }
+              suma += digito;
+          }
+
+          const modulo10 = suma % 10;
+
+          return modulo10 === 0;
+      }
+
+      function validarCedula() {
+          var cedula = document.getElementById("cedula").value;
+          var resultado = document.getElementById("resultado");
+
+          if (validarModulo10(cedula)) {
+              resultado.innerHTML = "La cédula de identidad es válida.";
+              resultado.style.color = "green";
+          } else {
+              resultado.innerHTML = "La cédula de identidad no es válida.";
+              resultado.style.color = "red";
+          }
+      }
+  </script>
+</head>
+<body>
+    <div id="encabezado">
+        <img src="ruta/a/tu/imagen.jpg" alt="Encabezado de la página" width="400">
+    </div>
+
+    <h1>Validador de Cédula de Identidad</h1>
+    <form onsubmit="return false;">
+        <label for="cedula">Ingrese el número de cédula:</label><br>
+        <input type="text" id="cedula" name="cedula"><br>
+        <button onclick="validarCedula()">Validar</button>
+    </form>
+    <div id="resultado"></div>
+</body>
+</html>
