@@ -3,73 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Cédula de Identidad</title>
+    <title>Validador de Cédula Ecuatoriana</title>
     <style>
         body {
-            font-family: 'Times New Roman', Times, serif, sans-serif;
-            background-color: #ececec;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
         }
 
         h1 {
-            color: #3d0258;
-            text-align: center;
-        }
-
-        form {
-            text-align: center;
-            margin-top: 50px;
+            color: #333;
         }
 
         label {
             display: block;
+            font-size: 18px;
+            color: #333;
             margin-bottom: 10px;
-            color: #0a0000;
         }
 
         input[type="text"] {
             padding: 10px;
-            width: 300px;
+            width: 100%;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
 
         button {
             padding: 10px 20px;
-            background-color: #121ba3;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
             font-size: 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
 
         #resultado {
-            text-align: center;
             margin-top: 20px;
             font-size: 18px;
         }
-
-        #encabezado {
-            text-align: center;
-            margin-top: 20px;
-        }
     </style>
     <script>
-        function validarModulo10(cedula) {
-            if (cedula.length !== 10) {
+        function validarCedulaEcuador(cedula) {
+            if (cedula.length !== 10 || isNaN(cedula)) {
                 return false;
             }
 
+            const digitoRegion = parseInt(cedula.substring(0, 2));
+            if (digitoRegion < 1 || digitoRegion > 24) {
+                return false; // La región debe estar entre 01 y 24
+            }
+
             let suma = 0;
-            for (let i = 0; i < cedula.length; i++) {
+            for (let i = 0; i < 9; i++) {
                 let digito = parseInt(cedula[i]);
-                if (isNaN(digito)) {
-                    return false; // Retorna falso si hay algún carácter no numérico
-                }
                 if (i % 2 === 0) {
                     digito *= 2;
                     if (digito > 9) {
@@ -79,12 +87,16 @@
                 suma += digito;
             }
 
-            return suma % 10 === 0;
+            const digitoVerificador = parseInt(cedula[9]);
+            const modulo = suma % 10;
+            const verificadorCalculado = modulo === 0 ? 0 : 10 - modulo;
+
+            return verificadorCalculado === digitoVerificador;
         }
 
         function validarCedula() {
-            var cedula = document.getElementById("cedula").value;
-            var resultado = document.getElementById("resultado");
+            const cedula = document.getElementById("cedula").value;
+            const resultado = document.getElementById("resultado");
 
             if (cedula === "") {
                 resultado.innerHTML = "Por favor, ingrese una cédula.";
@@ -92,7 +104,7 @@
                 return;
             }
 
-            if (validarModulo10(cedula)) {
+            if (validarCedulaEcuador(cedula)) {
                 resultado.innerHTML = "La cédula de identidad es válida.";
                 resultado.style.color = "green";
             } else {
@@ -103,17 +115,16 @@
     </script>
 </head>
 <body>
-    <div id="encabezado">
-        <img src="ruta/a/tu/imagen.jpg" alt="Encabezado de la página" width="400">
+    <div class="container">
+        <h1>Validador de Cédula Ecuatoriana</h1>
+        <form onsubmit="return false;">
+            <label for="cedula">Ingrese el número de cédula:</label>
+            <input type="text" id="cedula" name="cedula" maxlength="10" placeholder="1234567890">
+            <button onclick="validarCedula()">Validar</button>
+        </form>
+        <div id="resultado"></div>
     </div>
-
-    <h1>Validador de Cédula de Identidad</h1>
-    <form onsubmit="return false;">
-        <label for="cedula">Ingrese el número de cédula:</label><br>
-        <input type="text" id="cedula" name="cedula"><br>
-        <button onclick="validarCedula()">Validar</button>
-    </form>
-    <div id="resultado"></div>
 </body>
 </html>
+
 
