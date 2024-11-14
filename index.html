@@ -3,76 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Cédula </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+    <title>Validación de Cédula</title>
+</head>
+<body>
+    <h2>Validar Cédula</h2>
+    <form id="form-cedula">
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" maxlength="11" placeholder="Ingresa la cédula" required>
+        <button type="button" onclick="validarCedula()">Validar</button>
+    </form>
+    <p id="resultado"></p>
 
-        .container {
-            text-align: center;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        label {
-            display: block;
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            width: 100%;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #218838;
-        }
-
-        #resultado {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
     <script>
-        function validarCedula(cedula) {
-            cedula = cedula.replace(/-/g, "");
+        function validarCedula() {
+            const cedula = document.getElementById("cedula").value;
+            const resultado = document.getElementById("resultado");
 
-            if (cedula.length !== 11 || isNaN(cedula)) {
-                return false;
+            if (cedula.length !== 11 || !/^\d+$/.test(cedula)) {
+                resultado.textContent = "Cédula inválida: debe contener 11 dígitos numéricos.";
+                return;
             }
 
+            const digitoVerificador = parseInt(cedula[10]);
+
             let suma = 0;
+
             for (let i = 0; i < 10; i++) {
                 let digito = parseInt(cedula[i]);
 
@@ -80,52 +35,26 @@
                     digito *= 1;
                 } else {
                     digito *= 2;
-                    if (digito > 9) {
-                        digito -= 9;
-                    }
+                    if (digito > 9) digito -= 9;
                 }
 
                 suma += digito;
             }
 
-            let ultimoDigito = parseInt(cedula[10]);
-            let verificadorCalculado = (10 - (suma % 10)) % 10;
+            const modulo = suma % 10 === 0 ? 0 : 10 - (suma % 10);
 
-            return verificadorCalculado === ultimoDigito;
-        }
-
-        function validarCedula() {
-            const cedula = document.getElementById("cedula").value;
-            const resultado = document.getElementById("resultado");
-
-            if (cedula === "") {
-                resultado.innerHTML = "Por favor, ingrese una cédula.";
-                resultado.style.color = "red";
-                return;
-            }
-
-            if (validarCedula(cedula)) {
-                resultado.innerHTML = "La cédula de identidad es válida.";
-                resultado.style.color = "black";
+            if (modulo === digitoVerificador) {
+                resultado.textContent = "Cédula válida";
+                resultado.style.color = "green";
             } else {
-                resultado.innerHTML = "La cédula de identidad no es válida.";
+                resultado.textContent = "Cédula inválida";
                 resultado.style.color = "red";
             }
         }
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Validador de Cédula </h1>
-        <form onsubmit="return false;">
-            <label for="cedula">Ingrese el número de cédula:</label>
-            <input type="text" id="cedula" name="cedula" maxlength="13" placeholder="000-0000000-0">
-            <button type="button" onclick="validarCedula()">Validar</button>
-        </form>
-        <div id="resultado"></div>
-    </div>
 </body>
 </html>
+
 
 
 
