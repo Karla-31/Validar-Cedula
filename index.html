@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Cédula Ecuatoriana</title>
+    <title>Validador de Cédula </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -65,20 +65,15 @@
         }
     </style>
     <script>
-        function validarCedulaEcuador(cedula) {
-            if (cedula.length !== 10 || isNaN(cedula)) {
+        function validarCedula(cedula) {
+            if (cedula.length !== 11 || isNaN(cedula)) {
                 return false;
             }
 
-            const digitoRegion = parseInt(cedula.substring(0, 2));
-            if (digitoRegion < 1 || digitoRegion > 24) {
-                return false; // La región debe estar entre 01 y 24
-            }
-
             let suma = 0;
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < 11; i++) {
                 let digito = parseInt(cedula[i]);
-                if (i % 2 === 0) {
+                if ((i + 1) % 2 === 0) {
                     digito *= 2;
                     if (digito > 9) {
                         digito -= 9;
@@ -87,11 +82,7 @@
                 suma += digito;
             }
 
-            const digitoVerificador = parseInt(cedula[9]);
-            const modulo = suma % 10;
-            const verificadorCalculado = modulo === 0 ? 0 : 10 - modulo;
-
-            return verificadorCalculado === digitoVerificador;
+            return suma % 10 === 0;
         }
 
         function validarCedula() {
@@ -104,7 +95,7 @@
                 return;
             }
 
-            if (validarCedulaEcuador(cedula)) {
+            if (validarCedula(cedula)) {
                 resultado.innerHTML = "La cédula de identidad es válida.";
                 resultado.style.color = "green";
             } else {
@@ -116,13 +107,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Validador de Cédula Ecuatoriana</h1>
+        <h1>Validador de Cédula </h1>
         <form onsubmit="return false;">
             <label for="cedula">Ingrese el número de cédula:</label>
-            <input type="text" id="cedula" name="cedula" maxlength="10" placeholder="1234567890">
+            <input type="text" id="cedula" name="cedula" maxlength="11" placeholder="00112345678">
             <button onclick="validarCedula()">Validar</button>
         </form>
         <div id="resultado"></div>
+    </div>
+</body>
+</html>
+
     </div>
 </body>
 </html>
