@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validador de Cédula </title>
+    <title>Validador de Cédula</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,23 +66,32 @@
     </style>
     <script>
         function validarCedula(cedula) {
+            cedula = cedula.replace(/-/g, "");
+
             if (cedula.length !== 11 || isNaN(cedula)) {
                 return false;
             }
 
             let suma = 0;
-            for (let i = 0; i < 11; i++) {
+            for (let i = 0; i < 10; i++) {
                 let digito = parseInt(cedula[i]);
-                if ((i + 1) % 2 === 0) {
+
+                if (i % 2 === 0) {
+                    digito *= 1;
+                } else {
                     digito *= 2;
                     if (digito > 9) {
                         digito -= 9;
                     }
                 }
+
                 suma += digito;
             }
 
-            return suma % 10 === 0;
+            let ultimoDigito = parseInt(cedula[10]);
+            let verificadorCalculado = (10 - (suma % 10)) % 10;
+
+            return verificadorCalculado === ultimoDigito;
         }
 
         function validarCedula() {
@@ -110,13 +119,14 @@
         <h1>Validador de Cédula </h1>
         <form onsubmit="return false;">
             <label for="cedula">Ingrese el número de cédula:</label>
-            <input type="text" id="cedula" name="cedula" maxlength="11" placeholder="00112345678">
+            <input type="text" id="cedula" name="cedula" maxlength="13" placeholder="402-1049143-3">
             <button onclick="validarCedula()">Validar</button>
         </form>
         <div id="resultado"></div>
     </div>
 </body>
 </html>
+
 
     </div>
 </body>
