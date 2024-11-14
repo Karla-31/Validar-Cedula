@@ -51,7 +51,6 @@
             text-align: center;
             margin-top: 20px;
             font-size: 18px;
-            color: #e4d7d7;
         }
 
         #encabezado {
@@ -61,40 +60,39 @@
     </style>
     <script>
         function validarModulo10(cedula) {
-          if (cedula.length !== 10) {
-              return false;
-          }
+            if (cedula.length !== 10) {
+                return false;
+            }
 
-          let suma = 0;
-          for (let i = 0; i < cedula.length; i++) {
-              let digito = parseInt(cedula[i]);
-              if (i % 2 === 0) {
-                  digito *= 2;
-                  if (digito > 9) {
-                      digito -= 9;
-                  }
-              }
-              suma += digito;
-          }
+            let suma = 0;
+            for (let i = 0; i < cedula.length; i++) {
+                let digito = parseInt(cedula[i]);
+                if (i % 2 === 0) {
+                    digito *= 2;
+                    if (digito > 9) {
+                        digito -= 9;
+                    }
+                }
+                suma += digito;
+            }
 
-          const modulo10 = suma % 10;
+            const modulo10 = suma % 10;
+            return modulo10 === 0;
+        }
 
-          return modulo10 === 0;
-      }
+        function validarCedula() {
+            var cedula = document.getElementById("cedula").value;
+            var resultado = document.getElementById("resultado");
 
-      function validarCedula() {
-          var cedula = document.getElementById("cedula").value;
-          var resultado = document.getElementById("resultado");
-
-          if (validarModulo10(cedula)) {
-              resultado.innerHTML = "La cédula de identidad es válida.";
-              resultado.style.color = "green";
-          } else {
-              resultado.innerHTML = "La cédula de identidad no es válida.";
-              resultado.style.color = "red";
-          }
-      }
-  </script>
+            if (validarModulo10(cedula)) {
+                resultado.innerHTML = "La cédula de identidad es válida.";
+                resultado.style.color = "green";
+            } else {
+                resultado.innerHTML = "La cédula de identidad no es válida.";
+                resultado.style.color = "red";
+            }
+        }
+    </script>
 </head>
 <body>
     <div id="encabezado">
@@ -110,3 +108,4 @@
     <div id="resultado"></div>
 </body>
 </html>
+
