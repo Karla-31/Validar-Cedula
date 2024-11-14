@@ -67,6 +67,9 @@
             let suma = 0;
             for (let i = 0; i < cedula.length; i++) {
                 let digito = parseInt(cedula[i]);
+                if (isNaN(digito)) {
+                    return false; // Retorna falso si hay algún carácter no numérico
+                }
                 if (i % 2 === 0) {
                     digito *= 2;
                     if (digito > 9) {
@@ -76,13 +79,18 @@
                 suma += digito;
             }
 
-            const modulo10 = suma % 10;
-            return modulo10 === 0;
+            return suma % 10 === 0;
         }
 
         function validarCedula() {
             var cedula = document.getElementById("cedula").value;
             var resultado = document.getElementById("resultado");
+
+            if (cedula === "") {
+                resultado.innerHTML = "Por favor, ingrese una cédula.";
+                resultado.style.color = "red";
+                return;
+            }
 
             if (validarModulo10(cedula)) {
                 resultado.innerHTML = "La cédula de identidad es válida.";
